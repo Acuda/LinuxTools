@@ -150,7 +150,7 @@ class ProcWatchViz(object):
 
     def printChilds(self, procDto, indent=0, indentstr='    '):
         if procDto.proc.is_running():
-            if time.time() - procDto.create_time < 1:
+            if time.time() - procDto.create_time < 2:
                 color = cc.c.green
             else:
                 color = cc.c.blue
