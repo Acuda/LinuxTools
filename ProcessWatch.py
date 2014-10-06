@@ -162,6 +162,9 @@ class ProcWatchViz(object):
                 if time.time() - procDto.lastSeen > 2:
                     return
 
+        if procDto.name == 'pbuilder_calls.':
+            color = cc.c.purple
+
 
         print cc.w('%s%s'% (indentstr * indent, procDto), color=color, mode=cc.m.fg)
         procDto.childDtoList.sort(key=operator.attrgetter('create_time'))
