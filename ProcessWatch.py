@@ -108,10 +108,9 @@ class ProcWatchViz(object):
         self.procWatch = ProcWatch()
 
     def doViz2(self):
-        self.procWatch.acquireProcessList()
-
         while True:
             print '\033[2J'
+            self.procWatch.acquireProcessList()
             pids = self.procWatch.findByRegEx('sshd: jenkins \\[priv\\]')
             for pid in pids:
                 self.printChilds(self.procWatch.getNewestProc(pid))
