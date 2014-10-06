@@ -116,8 +116,8 @@ class ProcWatchViz(object):
             for pid in pids:
                 self.printChilds(self.procWatch.getNewestProc(pid))
 
-            for x in range(10):
-                time.sleep(0.1)
+            for x in range(5):
+                time.sleep(0.05)
                 self.procWatch.acquireProcessList()
 
 
@@ -159,7 +159,7 @@ class ProcWatchViz(object):
             if not hasattr(procDto, 'lastSeen'):
                 procDto.lastSeen = time.time()
             else:
-                if time.time() - procDto.lastSeen > 2:
+                if time.time() - procDto.lastSeen > 1:
                     return
 
         if procDto.name == 'pbuilder_calls.':
