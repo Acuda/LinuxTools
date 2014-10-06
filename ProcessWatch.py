@@ -163,7 +163,7 @@ class ProcWatchViz(object):
             if not hasattr(procDto, 'lastSeen'):
                 procDto.lastSeen = time.time()
             else:
-                if time.time() - procDto.lastSeen > 2:
+                if time.time() - procDto.lastSeen > 10:
                     return
 
         if procDto.name == 'pbuilder_calls.':
