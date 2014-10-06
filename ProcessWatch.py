@@ -150,7 +150,7 @@ class ProcWatchViz(object):
 
     def printChilds(self, procDto, indent=0, indentstr='    '):
         if procDto.proc.is_running():
-            if time.time() - procDto.create_time < 2:
+            if time.time() - procDto.create_time < 1:
                 color = cc.c.green
             else:
                 color = cc.c.blue
@@ -159,7 +159,7 @@ class ProcWatchViz(object):
             if not hasattr(procDto, 'lastSeen'):
                 procDto.lastSeen = time.time()
             else:
-                if time.time() - procDto.lastSeen > 1:
+                if time.time() - procDto.lastSeen > 2:
                     return
 
 
