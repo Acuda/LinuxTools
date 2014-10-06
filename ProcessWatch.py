@@ -197,7 +197,7 @@ class ProcWatchViz(object):
 def load():
 
 
-    with open('procData.pickle', 'r') as f:
+    with open('procData_save.pickle', 'r') as f:
         data = pickle.load(f)
 
 
@@ -209,6 +209,8 @@ def load():
             print
 
 
+    print
+    print len(data)
 
 
 
@@ -217,9 +219,9 @@ def load():
 
 if __name__ == '__main__':
 
-    pwv = ProcWatchViz()
-    pwv.doViz2()
-    #load()
+    #pwv = ProcWatchViz()
+    #pwv.doViz2()
+    load()
 
 
 
