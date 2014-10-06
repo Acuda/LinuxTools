@@ -163,7 +163,7 @@ class ProcWatchViz(object):
                     return
 
         if procDto.name == 'pbuilder_calls.':
-            color = cc.c.purple
+            color = cc.c.yellow
 
 
         print cc.w('%s%s'% (indentstr * indent, procDto), color=color, mode=cc.m.fg)
