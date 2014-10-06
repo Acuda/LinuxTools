@@ -156,7 +156,7 @@ class ProcWatchViz(object):
         else:
             color = cc.c.red
 
-        print cc.w('%s%s'% (indentstr * indent, procDto), color=color, mode=cc.m.fg)
+        print cc.w('%s%s'% (indentstr * indent, procDto if color != cc.c.red else procDto.name), color=color, mode=cc.m.fg)
         for childDto in procDto.childDtoList:
             self.printChilds(childDto, indent+1)
 
