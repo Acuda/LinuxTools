@@ -114,7 +114,10 @@ class ProcWatchViz(object):
             pids = self.procWatch.findByRegEx('sshd: jenkins \\[priv\\]')
             for pid in pids:
                 self.printChilds(self.procWatch.getNewestProc(pid))
-            time.sleep(0.2)
+
+            for x in range(10):
+                time.sleep(0.1)
+                self.procWatch.acquireProcessList()
 
 
 
