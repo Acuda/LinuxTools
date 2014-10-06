@@ -22,9 +22,14 @@ class ProcDto(object):
 
     def __repr__(self):
         if not self.isFakeRoot:
-            return '%s %s %s' % (self.isRunning, self.name, self.cmdline)
+            return '%d %d %s %s' % (self.pid, self.ppid, self.name, self.cmdline if len(self.cmdline) else '')
         else:
             return 'FAKEROOT'
+
+    def __eq__(self, other):
+        return self.pid == other.pid and \
+               self.ppid == other.ppid and \
+               self.create_time == other.create_time
 
 class ProcWatch(object):
     def __init__(self):
@@ -67,53 +72,70 @@ class ProcWatch(object):
             if not rootProcDto:  # suppose we need an fakeRoot
                 rootProcDto = self.fakeRoot
 
-            rootProcDto.childDtoList.append(childProcDto)
+            if childProcDto not in rootProcDto.childDtoList:
+                rootProcDto.childDtoList.append(childProcDto)
             childProcDto.rootDto = rootProcDto
 
-def printChilds(procDto, indent=1, indentstr='    '):
-    for childDto in procDto.childDtoList:
-        if childDto.proc.is_running():
-            if time.time() - childDto.create_time <= 10:
+    def isPidChildOfPid(self, cpid, rpid):
+        cproc = self.getNewestProc(cpid)
+
+        #print 'check if', cpid, 'is child of', rpid
+        while True:
+
+            if cproc.rootDto.isFakeRoot:
+                return False
+
+            if cproc.pid == rpid:
+                return False
+            if cproc.rootDto.pid == rpid:
+                return True
+            cproc = cproc.rootDto
+
+class ProcWatchViz(object):
+    def __init__(self):
+        self.starttime = time.time()
+        self.procWatch = ProcWatch()
+
+    def doViz(self):
+        isFirstrun = True
+        while isFirstrun or raw_input('refresh?') != 'q':
+            isFirstrun = False
+            self.procWatch.acquireProcessList()
+
+            pidCache = list()
+            for pid in self.procWatch.procData:
+                proc = self.procWatch.getNewestProc(pid)
+                if proc.create_time > self.starttime:
+                    pidCache.append(pid)
+
+            rootPids = set()
+            for pid in pidCache:
+                for rpid in pidCache:
+                    if pid == rpid:
+                        break
+                    if self.procWatch.isPidChildOfPid(pid, rpid):
+                        rootPids.add(rpid)
+
+            for rpid in rootPids:
+                self.printChilds(self.procWatch.getNewestProc(rpid))
+
+    def printChilds(self, procDto, indent=0, indentstr='    '):
+        if procDto.proc.is_running():
+            if time.time() - procDto.create_time < 5:
                 color = cc.c.green
             else:
                 color = cc.c.blue
         else:
             color = cc.c.red
 
-        print cc.w('#%s%s'% (indentstr * indent, childDto), color=color, mode=cc.m.fg)
-        printChilds(childDto, indent+1)
+        print cc.w('%s%s'% (indentstr * indent, procDto), color=color, mode=cc.m.fg)
+        for childDto in procDto.childDtoList:
+            self.printChilds(childDto, indent+1)
+
+
 
 if __name__ == '__main__':
 
 
-    pw = ProcWatch()
-
-    isFirstrun = True
-    while isFirstrun or raw_input('refresh?') != 'q':
-        isFirstrun = False
-        pw.acquireProcessList()
-
-        printChilds(pw.fakeRoot)
-        #printChilds(pw.getNewestProc(20916))
-
-
-
-
-
-
-
-
-
-
-    #pprint(pw.procData)
-    #print 'length', len(pw.procData)
-    #raw_input('waiting....')
-    #pw.acquireProcessList()
-    #pprint(pw.procData)
-
-    #for pid in pw.procData.values():
-    #    for tme in pid.values():
-    #        print tme.pid, tme.name, tme.cmdline
-
-    #print 'length', len(pw.procData)
-
+    pwv = ProcWatchViz()
+    pwv.doViz()
