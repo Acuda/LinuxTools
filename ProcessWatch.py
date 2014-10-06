@@ -54,7 +54,8 @@ class ProcWatch(object):
             return
 
         pidBoundDict = self.procData.get(proc.pid, dict())
-        pidBoundDict[proc.create_time] = ProcDto(proc)
+        procDto = ProcDto(proc)
+        pidBoundDict[procDto.create_time] = procDto
         self.procData.update({proc.pid: pidBoundDict})
 
     def getNewestProc(self, pid):
