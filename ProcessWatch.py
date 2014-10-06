@@ -1,6 +1,7 @@
 import psutil
 from ConsoleColors import cc
 import time
+import re
 
 class ProcDto(object):
     def __init__(self, proc=None, isFakeRoot=False):
@@ -91,14 +92,39 @@ class ProcWatch(object):
                 return True
             cproc = cproc.rootDto
 
+    def findByRegEx(self, regex):
+        foundPids = set()
+        for pid, cpids in self.procData.items():
+            for ctime, proc in cpids.items():
+                procstr = proc.name + ' ' + ' '.join(proc.cmdline)
+                result = re.findall(regex, procstr)
+                if len(result):
+                    foundPids.add(pid)
+        return foundPids
+
 class ProcWatchViz(object):
     def __init__(self):
         self.starttime = time.time()
         self.procWatch = ProcWatch()
 
+    def doViz2(self):
+        self.procWatch.acquireProcessList()
+
+        while True:
+            print '\033[2J'
+            pids = self.procWatch.findByRegEx('sshd: jenkins \\[priv\\]')
+            for pid in pids:
+                self.printChilds(self.procWatch.getNewestProc(pid))
+            time.sleep(0.2)
+
+
+
+
     def doViz(self):
         isFirstrun = True
-        while isFirstrun or raw_input('refresh?') != 'q':
+        while isFirstrun or True:#raw_input('refresh?') != 'q':
+            print '='*100
+            print '\033[2J',
             isFirstrun = False
             self.procWatch.acquireProcessList()
 
@@ -132,10 +158,6 @@ class ProcWatchViz(object):
         for childDto in procDto.childDtoList:
             self.printChilds(childDto, indent+1)
 
-
-
 if __name__ == '__main__':
-
-
     pwv = ProcWatchViz()
-    pwv.doViz()
+    pwv.doViz2()
