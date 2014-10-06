@@ -3,6 +3,8 @@ from ConsoleColors import cc
 import time
 import re
 import operator
+import atexit
+import pickle
 
 class ProcDto(object):
     def __init__(self, proc=None, isFakeRoot=False):
@@ -12,15 +14,20 @@ class ProcDto(object):
         self.childDtoList = list()
 
         self.isFakeRoot = isFakeRoot
+        self.lastSeen = time.time()
 
         if not isFakeRoot:
             self.proc = proc
             self._requestAttributeData(proc)
 
+    def is_running(self):
+        if self.proc.is_running():
+            self.lastSeen = time.time()
+        return self.proc.is_running()
+
     def _requestAttributeData(self, proc):
         for attr in self.procAttributes:
             setattr(self, attr, getattr(self.proc, attr))
-        self.isRunning = proc.is_running()
 
     def __repr__(self):
         if not self.isFakeRoot:
@@ -109,6 +116,19 @@ class ProcWatchViz(object):
         self.starttime = time.time()
         self.procWatch = ProcWatch()
 
+        atexit.register(self.saveStuff)
+
+    def saveStuff(self):
+
+
+
+        with open('procData.pickle', 'w') as f:
+            print 'dump'
+            pickle.dump(self.procWatch.procData, f, -1)
+            f.flush()
+
+        print 'jeeeeeep'
+
     def doViz2(self):
         while True:
             print '\033[2J'
@@ -153,18 +173,16 @@ class ProcWatchViz(object):
                 self.printChilds(self.procWatch.getNewestProc(rpid))
 
     def printChilds(self, procDto, indent=0, indentstr='    '):
-        if procDto.proc.is_running():
+        if procDto.is_running():
             if time.time() - procDto.create_time < 1:
                 color = cc.c.green
             else:
                 color = cc.c.blue
         else:
             color = cc.c.red
-            if not hasattr(procDto, 'lastSeen'):
-                procDto.lastSeen = time.time()
-            else:
-                if time.time() - procDto.lastSeen > 10:
-                    return
+
+            if time.time() - procDto.lastSeen > 10:
+                return
 
         if procDto.name == 'pbuilder_calls.':
             color = cc.c.yellow
@@ -175,6 +193,34 @@ class ProcWatchViz(object):
         for childDto in procDto.childDtoList:
             self.printChilds(childDto, indent+1)
 
+
+def load():
+
+
+    with open('procData.pickle', 'r') as f:
+        data = pickle.load(f)
+
+
+    for k, v in data.items():
+        print k
+        for t, p in v.items():
+            print ' ', t, p
+
+            print
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
+
     pwv = ProcWatchViz()
     pwv.doViz2()
+    #load()
+
+
+
+
