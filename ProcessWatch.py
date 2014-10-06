@@ -112,7 +112,8 @@ class ProcWatchViz(object):
         while True:
             print '\033[2J'
             self.procWatch.acquireProcessList()
-            pids = self.procWatch.findByRegEx('update_chroot_tarballs\\.py')
+            #pids = self.procWatch.findByRegEx('update_chroot_tarballs\\.py')
+            pids = self.procWatch.findByRegEx('hudson[0-9]{10}')
             for pid in pids:
                 self.printChilds(self.procWatch.getNewestProc(pid))
 
