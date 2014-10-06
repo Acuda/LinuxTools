@@ -2,6 +2,7 @@ import psutil
 from ConsoleColors import cc
 import time
 import re
+import operator
 
 class ProcDto(object):
     def __init__(self, proc=None, isFakeRoot=False):
@@ -156,7 +157,9 @@ class ProcWatchViz(object):
         else:
             color = cc.c.red
 
+
         print cc.w('%s%s'% (indentstr * indent, procDto if color != cc.c.red else procDto.name), color=color, mode=cc.m.fg)
+        procDto.childDtoList.sort(key=operator.attrgetter('create_time'))
         for childDto in procDto.childDtoList:
             self.printChilds(childDto, indent+1)
 
