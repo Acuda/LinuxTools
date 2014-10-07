@@ -183,15 +183,16 @@ class ProcWatchViz(object):
 
     def printChilds(self, procDto, indent=0, indentstr='  '):
 
-        if procDto.name == 'pbuilder_calls.':
-            color = cc.c.yellow
-
 
         if procDto.is_running():
             if time.time() - procDto.create_time < 1:
                 color = cc.c.green
             else:
                 color = cc.c.blue
+
+            if procDto.name == 'pbuilder_calls.':
+                color = cc.c.yellow
+
         else:
             color = cc.c.red
 
