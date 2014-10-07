@@ -195,11 +195,14 @@ class ProcWatchViz(object):
                 try:
                     tmpstr = 'try killing zombie...'
                     tmpstr = cc.w(tmpstr, color=cc.c.black, mode=cc.m.hifg, decorator=cc.d.bold)
-                    tmpstr = cc.w(tmpstr, color=cc.c.red, mode=cc.m.hibg)
+                    tmpstr = cc.w(tmpstr, color=cc.c.red, mode=cc.m.bg)
                     print tmpstr
                     procDto.proc.kill()
                 except:
-                    print cc.w('cant kill proc...', color=cc.c.red, mode=cc.m.hifg, decorator=cc.d.bold)
+                    tmpstr = 'cant kill proc...'
+                    tmpstr = cc.w(tmpstr, color=cc.c.black, mode=cc.m.hifg, decorator=cc.d.bold)
+                    tmpstr = cc.w(tmpstr, color=cc.c.red, mode=cc.m.bg)
+                    print tmpstr
 
 
             if procDto.name == 'pbuilder_calls.':
