@@ -205,6 +205,7 @@ class ProcWatchViz(object):
 
         print cc.w('%s %s' % (indentstr * indent, procDto.pid), color=color, mode=cc.m.fg),
         print cc.w(procDto.name, color=color, mode=cc.m.hifg, decorator=cc.d.bold),
+        print cc.w('(%s)'%procDto.proc.status, color=color, mode=cc.m.hifg, decorator=cc.d.underline),
         cmdl = ' '.join(procDto.cmdline).replace('\n', '\n' + indentstr * (indent+4))
         if len(cmdl) < 150:
             print cc.w('[%s]' % cmdl, color=color, mode=cc.m.fg)
