@@ -193,7 +193,7 @@ class ProcWatchViz(object):
             if procDto.name == 'pbuilder_calls.':
                 color = cc.c.yellow
                 print cc.w(procDto.proc.get_open_files(), color=cc.c.cyan, mode=cc.m.hifg)
-                psutil.Process().get_open_files()
+                #bpsutil.Process().get_open_files()
 
         else:
             color = cc.c.red
