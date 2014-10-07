@@ -18,7 +18,11 @@ class ProcDto(object):
 
         if not isFakeRoot:
             self.proc = proc
-            self._requestAttributeData(proc)
+            self.pid = proc.pid
+            self.ppid = proc.ppid
+            self.create_time = proc.create_time
+            self.name = proc.name
+            self.cmdline = self.cmdline
 
     def is_running(self):
         if self.proc.is_running():
