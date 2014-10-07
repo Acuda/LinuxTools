@@ -22,7 +22,7 @@ class ProcDto(object):
             self.ppid = proc.ppid
             self.create_time = proc.create_time
             self.name = proc.name
-            self.cmdline = self.cmdline
+            self.cmdline = proc.cmdline
 
     def is_running(self):
         if self.proc.is_running():
