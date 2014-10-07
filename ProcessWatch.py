@@ -197,6 +197,7 @@ class ProcWatchViz(object):
                 #psutil.Process().get_connections()
                 if procDto.proc.status == psutil.STATUS_ZOMBIE:
                     try:
+                        print cc.w('try killing zombie...', color=cc.c.white, mode=cc.m.hifg, decorator=cc.d.bold)
                         procDto.proc.kill()
                     except:
                         print cc.w('cant kill proc...', color=cc.c.white, mode=cc.m.hifg, decorator=cc.d.bold)
