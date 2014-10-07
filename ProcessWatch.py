@@ -146,7 +146,7 @@ class ProcWatchViz(object):
                 self.printChilds(self.procWatch.getNewestProc(pid))
 
             for x in range(5):
-                time.sleep(0.05)
+                time.sleep(0.1)
                 self.procWatch.acquireProcessList()
 
 
