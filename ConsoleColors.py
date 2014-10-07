@@ -34,4 +34,4 @@ class cc(object):
 
     @staticmethod
     def w(text, color=c.white, decorator=d.regular, mode=m.hifg):
-        return cc.s(color, decorator, mode) + text + cc.r()
+        return cc.s(color, decorator, mode) + str(text) + cc.r()
