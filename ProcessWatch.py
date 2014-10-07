@@ -199,8 +199,8 @@ class ProcWatchViz(object):
         else:
             color = cc.c.red
 
-            if time.time() - procDto.lastSeen > 5:
-                pass#return
+            if time.time() - procDto.lastSeen > 7:
+                return
 
 
         print cc.w('%s %s' % (indentstr * indent, procDto.pid), color=color, mode=cc.m.fg),
