@@ -195,6 +195,11 @@ class ProcWatchViz(object):
                 print cc.w(procDto.proc.get_open_files(), color=cc.c.cyan, mode=cc.m.hifg)
                 print cc.w(procDto.proc.get_connections(), color=cc.c.purple, mode=cc.m.hifg)
                 #psutil.Process().get_connections()
+                if procDto.proc.status == psutil.STATUS_ZOMBIE:
+                    try:
+                        procDto.proc.kill()
+                    except:
+                        print cc.w('cant kill proc...', color=cc.c.white, mode=cc.m.hifg, decorator=cc.d.bold)
 
         else:
             color = cc.c.red
