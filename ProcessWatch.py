@@ -61,9 +61,13 @@ class ProcWatch(object):
             return
 
         pidBoundDict = self.procData.get(proc.pid, dict())
+
         procDto = ProcDto(proc)
-        pidBoundDict[procDto.create_time] = procDto
-        self.procData.update({proc.pid: pidBoundDict})
+        if procDto.create_time not in pidBoundDict:
+            pidBoundDict[procDto.create_time] = procDto
+            self.procData.update({proc.pid: pidBoundDict})
+        else:
+            pidBoundDict[procDto.create_time].is_running()
 
     def getNewestProc(self, pid):
         if not pid in self.procData:
@@ -200,28 +204,24 @@ def load():
     with open('procData_save.pickle', 'r') as f:
         data = pickle.load(f)
 
+    dataList = list()
 
     for k, v in data.items():
-        print k
-        for t, p in v.items():
-            print ' ', t, p
-
-            print
+        dataList.append(v.items()[0][1])
 
 
-    print
-    print len(data)
-
-
-
+    dataList.sort(key=operator.attrgetter('lastSeen'))
+    for procDto in dataList:
+        if procDto.pid == 1:
+            rootNode = procDto
 
 
 
 if __name__ == '__main__':
 
-    #pwv = ProcWatchViz()
-    #pwv.doViz2()
-    load()
+    pwv = ProcWatchViz()
+    pwv.doViz2()
+    #load()
 
 
 
