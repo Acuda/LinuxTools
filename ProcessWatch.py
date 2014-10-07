@@ -182,6 +182,11 @@ class ProcWatchViz(object):
                 self.printChilds(self.procWatch.getNewestProc(rpid))
 
     def printChilds(self, procDto, indent=0, indentstr='  '):
+
+        if procDto.name == 'pbuilder_calls.':
+            color = cc.c.yellow
+
+
         if procDto.is_running():
             if time.time() - procDto.create_time < 1:
                 color = cc.c.green
@@ -192,9 +197,6 @@ class ProcWatchViz(object):
 
             if time.time() - procDto.lastSeen > 5:
                 return
-
-        if procDto.name == 'pbuilder_calls.':
-            color = cc.c.yellow
 
 
         print cc.w('%s%s'% (indentstr * indent, procDto), color=color, mode=cc.m.fg)
