@@ -195,13 +195,13 @@ class ProcWatchViz(object):
                 try:
                     tmpstr = 'try killing zombie...'
                     tmpstr = cc.w(tmpstr, color=cc.c.black, mode=cc.m.fg, decorator=cc.d.bold)
-                    tmpstr = cc.w(tmpstr, color=cc.c.red, mode=cc.m.hibg)
+                    tmpstr = cc.w(tmpstr, color=cc.c.red, mode=cc.m.bg)
                     print tmpstr
                     procDto.proc.kill()
                 except:
                     tmpstr = 'cant kill proc...'
                     tmpstr = cc.w(tmpstr, color=cc.c.black, mode=cc.m.fg, decorator=cc.d.bold)
-                    tmpstr = cc.w(tmpstr, color=cc.c.red, mode=cc.m.hibg)
+                    tmpstr = cc.w(tmpstr, color=cc.c.red, mode=cc.m.bg)
                     print tmpstr
 
 
