@@ -193,7 +193,7 @@ class ProcWatchViz(object):
             color = cc.c.yellow
 
 
-        print cc.w('%s%s'% (indentstr * indent, procDto), color=color, mode=cc.m.fg)
+        print cc.w('#%s%s'% (indentstr * indent, procDto), color=color, mode=cc.m.fg)
         procDto.childDtoList.sort(key=operator.attrgetter('create_time'))
         for childDto in procDto.childDtoList:
             self.printChilds(childDto, indent+1)
