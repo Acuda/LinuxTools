@@ -205,7 +205,13 @@ class ProcWatchViz(object):
 
         print cc.w('%s %s' % (indentstr * indent, procDto.pid), color=color, mode=cc.m.fg),
         print cc.w(procDto.name, color=color, mode=cc.m.hifg, decorator=cc.d.bold),
-        print procDto.cmdline[:4] if len(procDto.cmdline) > 4 else procDto.cmdline
+        cmdl = ' '.join(procDto.cmdline)
+        if len(cmdl) < 30:
+            print cc.w('[%s]' % cmdl, color=color, mode=cc.m.fg)
+        else:
+            print cc.w('[%s' % cmdl[:150], color=color, mode=cc.m.fg),
+            print cc.w('...', color=color, mode=cc.m.hifg, decorator=cc.d.bold),
+            print cc.w(']', color=color, mode=cc.m.fg)
 
         procDto.childDtoList.sort(key=operator.attrgetter('create_time'))
         for childDto in procDto.childDtoList:
