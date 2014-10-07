@@ -186,7 +186,7 @@ class ProcWatchViz(object):
         else:
             color = cc.c.red
 
-            if time.time() - procDto.lastSeen > 10:
+            if time.time() - procDto.lastSeen > 5:
                 return
 
         if procDto.name == 'pbuilder_calls.':
