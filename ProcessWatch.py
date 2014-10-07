@@ -26,8 +26,9 @@ class ProcDto(object):
         return self.proc.is_running()
 
     def _requestAttributeData(self, proc):
-        for attr in self.procAttributes:
-            setattr(self, attr, getattr(self.proc, attr))
+        if self.is_running():
+            for attr in self.procAttributes:
+                setattr(self, attr, getattr(self.proc, attr))
 
     def __repr__(self):
         if not self.isFakeRoot:
